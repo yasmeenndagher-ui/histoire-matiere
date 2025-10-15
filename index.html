@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Une longue histoire de la matière</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --accent: #f59e94; /* saumon/rose pastel */
+      --accent-2: #fde7e4;
+      --ring: rgba(245, 158, 148, .35);
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(2, 8, 23, .07);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1220;
+        --card: #0f172a;
+        --ink: #e5e7eb;
+        --muted: #94a3b8;
+        --accent: #f59e94;
+        --accent-2: #2a1b1b;
+        --ring: rgba(245, 158, 148, .45);
+        --shadow: 0 10px 30px rgba(0,0,0,.4);
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg), #fff0f0 140%);
+      color: var(--ink);
+      line-height: 1.6;
+      letter-spacing: .2px;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header.hero {
+      display: grid;
+      gap: 16px;
+      padding: clamp(18px, 3vw, 28px);
+      border-radius: calc(var(--radius) + 8px);
+      background: linear-gradient(135deg, var(--accent-2), transparent 60%), var(--card);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(245, 158, 148, .25);
+    }
+    .title {
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1.15;
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    .subtitle { margin: 0; color: var(--muted); font-weight: 500; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+    @media (min-width: 860px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 18px 22px;
+      border: 1px solid rgba(148, 163, 184, .25);
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 35px rgba(2,8,23,.12); border-color: var(--ring); }
+    .card h2 { margin: 0 0 10px; font-size: 20px; letter-spacing: .2px; }
+    .card p.lead { margin: 6px 0 14px; color: var(--muted); font-size: 14px; }
+
+    /* Timeline (Scientifiques) */
+    .timeline { position: relative; margin: 8px 0 0; padding-left: 8px; }
+    .timeline::before {
+      content: "";
+      position: absolute; left: 10px; top: 6px; bottom: 6px;
+      width: 2px; background: linear-gradient(var(--accent), transparent);
+      opacity: .5; border-radius: 2px;
+    }
+    .event { position: relative; padding: 10px 10px 10px 28px; border-radius: 12px; border: 1px dashed rgba(245, 158, 148, .35); margin-bottom: 10px; background: linear-gradient(180deg, rgba(245,158,148,.06), transparent 60%); }
+    .event::before {
+      content: ""; position: absolute; left: 3px; top: 16px; width: 12px; height: 12px;
+      background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 3px var(--accent-2);
+    }
+    .year { font-weight: 800; font-size: 13px; letter-spacing: .3px; color: var(--ink); }
+    .who { font-weight: 600; }
+    .event p { margin: 4px 0; }
+
+    /* Théorie cellulaire */
+    .principes { display: grid; gap: 12px; }
+    .principe { border: 1px solid rgba(148, 163, 184, .28); border-radius: 14px; padding: 12px 14px; background: radial-gradient(80% 80% at 10% 0%, rgba(245,158,148,.08), transparent 60%), var(--card); }
+    .badge { display: inline-block; font-size: 12px; padding: 4px 8px; border-radius: 999px; background: var(--accent-2); border: 1px solid rgba(245,158,148,.35); font-weight: 700; letter-spacing: .4px; }
+    blockquote { margin: 8px 0 0; padding-left: 10px; border-left: 3px solid var(--accent); color: var(--ink); }
+
+    /* Microscopes */
+    .micros-grid { display: grid; gap: 12px; }
+    .scope { border: 1px solid rgba(148, 163, 184, .28); border-radius: 14px; padding: 12px 14px; background: var(--card); }
+    .scope h3 { margin: 0 0 6px; font-size: 16px; }
+    ul.clean { margin: 8px 0 0 18px; }
+    .tag { font-size: 12px; color: var(--muted); }
+
+    /* Footer & helpers */
+    .bar { display:flex; gap:10px; flex-wrap: wrap; align-items:center; margin-top: 18px; }
+    .btn {
+      appearance: none; border: 1px solid rgba(148,163,184,.35); background: var(--card);
+      padding: 10px 14px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow);
+      transition: transform .15s ease, border-color .2s ease; text-decoration: none; color: inherit;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--ring); }
+    footer { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1 class="title">Une longue histoire de la matière</h1>
+      <p class="subtitle">Trois parties claires : <strong>Scientifiques & découvertes</strong>, <strong>Théorie cellulaire</strong> et <strong>Microscopes</strong>. Design simple, en cartes.</p>
+      <div class="bar">
+        <a class="btn" href="#scientifiques">Aller aux scientifiques</a>
+        <a class="btn" href="#theorie">Aller à la théorie</a>
+        <a class="btn" href="#microscopes">Aller aux microscopes</a>
+        <button class="btn" onclick="window.print()">Imprimer</button>
+      </div>
+    </header>
+
+    <section id="scientifiques" class="grid" aria-label="Scientifiques et découvertes">
+      <article class="card" style="grid-column: 1 / -1">
+        <h2>Les scientifiques & leurs découvertes</h2>
+        <p class="lead">Repères chronologiques majeurs – éléments essentiels sur des lignes séparées pour lecture rapide.</p>
+        <div class="timeline">
+          <div class="event">
+            <div class="year">1595 — <span class="who">Zacharias Janssen</span></div>
+            <p>Invente le premier microscope simple à deux lentilles convergentes (≈ ×10).</p>
+            <p>Première étape des progrès techniques pour observer l’invisible.</p>
+          </div>
+          <div class="event">
+            <div class="year">1609 — <span class="who">Galilée</span></div>
+            <p>Améliore le microscope (Occhiolino : 1 lentille divergente + 1 convergente, ≈ ×30).</p>
+            <p>Fait entrer l’optique dans la recherche scientifique.</p>
+          </div>
+          <div class="event">
+            <div class="year">1665 — <span class="who">Robert Hooke</span></div>
+            <p>Observe le liège au microscope et décrit des « cellules ».</p>
+            <p>Naissance de la microscopie biologique (description de tissus au microscope).</p>
+          </div>
+          <div class="event">
+            <div class="year">1668 — <span class="who">Francesco Redi</span></div>
+            <p>Expérience des bocaux de viande : les asticots apparaissent seulement si les mouches peuvent pondre.</p>
+            <p>Démontre que la vie ne naît pas spontanément de la matière inerte.</p>
+          </div>
+          <div class="event">
+            <div class="year">1678 — <span class="who">Antoni van Leeuwenhoek</span></div>
+            <p>Fabrique un microscope très puissant (jusqu’à ×300).</p>
+            <p>Observe pour la première fois bactéries, unicellulaires et spermatozoïdes (« animalcules »).</p>
+            <p>Révèle l’existence d’un monde microscopique vivant.</p>
+          </div>
+          <div class="event">
+            <div class="year">1838 — <span class="who">Matthias Schleiden</span></div>
+            <p>Montre que toutes les plantes sont formées de cellules contenant un noyau.</p>
+            <p>Énonce le 1<sup>er</sup> principe de la théorie cellulaire.</p>
+          </div>
+          <div class="event">
+            <div class="year">1839 — <span class="who">Theodor Schwann</span></div>
+            <p>Observe les mêmes structures cellulaires chez les animaux.</p>
+            <p>Avec Schleiden : mêmes bases cellulaires chez plantes et animaux.</p>
+            <p>Établit le 2<sup>e</sup> principe de la théorie cellulaire.</p>
+          </div>
+          <div class="event">
+            <div class="year">1855 — <span class="who">Rudolf Virchow</span></div>
+            <p>Affirme que toute cellule provient d’une autre cellule.</p>
+            <p>Énonce le 3<sup>e</sup> principe de la théorie cellulaire.</p>
+          </div>
+          <div class="event">
+            <div class="year">1861 — <span class="who">Louis Pasteur</span></div>
+            <p>Expérience du col de cygne : un milieu stérile ne crée pas de vie spontanément.</p>
+            <p>Montre que les micro‑organismes viennent de ceux présents dans l’air ; fin de la génération spontanée.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="theorie" class="grid" aria-label="Théorie cellulaire">
+      <article class="card">
+        <h2>Théorie cellulaire</h2>
+        <p class="lead">Trois principes fondateurs, simples à mémoriser.</p>
+        <div class="principes">
+          <div class="principe">
+            <span class="badge">Principe 1</span>
+            <blockquote>« Tous les êtres vivants sont constitués de cellules. »</blockquote>
+          </div>
+          <div class="principe">
+            <span class="badge">Principe 2</span>
+            <blockquote>« La cellule est l’unité structurelle et fonctionnelle du vivant. »</blockquote>
+          </div>
+          <div class="principe">
+            <span class="badge">Principe 3</span>
+            <blockquote>« Toute cellule provient d’une cellule préexistante. »</blockquote>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <h2>Pourquoi c’est important ?</h2>
+        <ul class="clean">
+          <li>Base commune à tous les organismes : du bactérie au chêne, de l’amibe à l’humain.</li>
+          <li>Relie <em>structure</em> (organites, membranes) et <em>fonction</em> (respiration, division, etc.).</li>
+          <li>Explique la croissance, la cicatrisation, la reproduction à l’échelle cellulaire.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Mots‑clés</h2>
+        <p class="tag">cellule · organite · noyau · membrane · division · unicellulaire · pluricellulaire</p>
+      </article>
+    </section>
+
+    <section id="microscopes" class="grid" aria-label="Microscopes">
+      <article class="card" style="grid-column: 1 / -1">
+        <h2>Les microscopes</h2>
+        <p class="lead">Comparer rapidement sources, usages et limites.</p>
+        <div class="micros-grid">
+          <div class="scope">
+            <h3>Microscope optique (photonique) <span class="tag">1595–1665</span></h3>
+            <ul class="clean">
+              <li><strong>Source :</strong> lumière.</li>
+              <li><strong>Permet :</strong> observer des cellules entières vivantes.</li>
+              <li><strong>Limite de résolution :</strong> ≈ 0,275 μm.</li>
+            </ul>
+          </div>
+          <div class="scope">
+            <h3>Microscope électronique à transmission (MET)</h3>
+            <ul class="clean">
+              <li><strong>Source :</strong> faisceau d’électrons traversant l’échantillon.</li>
+              <li><strong>Permet :</strong> voir organites et macromolécules en noir et blanc.</li>
+            </ul>
+          </div>
+          <div class="scope">
+            <h3>Microscope électronique à balayage (MEB)</h3>
+            <ul class="clean">
+              <li><strong>Source :</strong> électrons qui balayent la surface.</li>
+              <li><strong>Permet :</strong> images 3D en relief des surfaces cellulaires.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </div>
+</body>
+</html>
